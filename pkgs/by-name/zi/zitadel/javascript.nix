@@ -28,7 +28,7 @@ let
       "@zitadel/console"
       "@zitadel/proto"
     ];
-    hash = "sha256-KxQwsQb+ycsx5b0rg15HBpy/nS0xAk1I/GIOvc4dsF0=";
+    hash = "sha256-8eW45vFB295KGIxdGIu+gpC9YDwZj0V+CTBZjx3i8aU=";
   };
 
   # Upstream generates packages/zitadel-proto with `buf generate ../../proto`

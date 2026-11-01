@@ -17,14 +17,14 @@
 }:
 
 let
-  version = "4.17.3";
+  version = "4.20.0";
   zitadelRepo = fetchFromGitHub {
     owner = "zitadel";
     repo = "zitadel";
     tag = "v${version}";
-    hash = "sha256-nA9GgsvCKFNaHjMLwb1SNNZPLL02YP8vK9oec2qVDnE=";
+    hash = "sha256-ZncCmMF4c2bVhgn2zAULA1XOP/H/DPQ+vjwA7Z28i3E=";
   };
-  goModulesHash = "sha256-8/TkV1JTKNSIknzEPbTDWzcOZQ6jCEkc6vSLLhdLYrs=";
+  goModulesHash = "sha256-YJTQCxTTRLZNchyxxMhEe6sJZMXDqamVdD8NrEIlIDI=";
 
   # protoc plugins that live inside the ZITADEL repo itself. Upstream installs
   # them with `go install ./internal/protoc/...` (the `generate-install` target
@@ -80,7 +80,7 @@ let
     '';
 
     outputHashMode = "flat";
-    outputHash = "sha256-FkrbbUWvzziOe/mb3f3BgoApPLMQZPR07+EA8UMGY2g=";
+    outputHash = "sha256-9hvtyRpUzJ90/3GJng7/B2Nk7kFGlICx6MAHbmyDjBs=";
   };
 
   generateProtobufCode =
@@ -154,6 +154,11 @@ buildGoModule (finalAttrs: {
 
   proxyVendor = true;
   vendorHash = goModulesHash;
+  # buildGoModule passes preBuild on to the go-modules derivation, which would
+  # make fetching the modules wait for the protobuf codegen and the console.
+  # `go mod download` needs neither; the protoc plugins above vendor the same
+  # modules without it.
+  overrideModAttrs = _: { preBuild = null; };
   ldflags = [
     "-s"
     "-w"
